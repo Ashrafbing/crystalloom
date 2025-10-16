@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login - Crystal Loom</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-green-50 flex items-center justify-center h-screen">
+
+  <!-- Back Button -->
+  <div class="fixed top-20 left-4 z-40 md:top-24 md:left-6">
+    <button onclick="history.back()" class="flex items-center text-white font-bold bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 animate-pulse">
+      <span class="text-2xl mr-2">⬅️</span>
+      <span class="hidden sm:inline">Back</span>
+    </button>
+  </div>
+
+  <div class="bg-white p-10 rounded-2xl shadow-xl w-96 mt-8">
+    <div class="flex flex-col items-center mb-6">
+      <img src="Untitled design.png" alt="Crystal Loom Logo" class="h-16 w-16 rounded-full">
+      <h2 class="text-2xl font-bold text-green-900 mt-3">Login</h2>
+    </div>
+
+  <!-- Login Form -->
+  <form id="loginForm" onsubmit="handleLogin(event)">
+    <input id="email" type="email" placeholder="Email" required class="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-green-500">
+    <input id="password" type="password" placeholder="Password" required class="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-green-500">
+    <button id="loginBtn" type="submit" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-600">Login</button>
+  </form>
+
+    <p class="text-center text-sm text-gray-600 mt-4">
+      Don’t have an account? <a href="signup.html" class="text-green-700 hover:underline">Sign Up</a>
+    </p>
+  <p class="text-center text-sm text-gray-600 mt-2">
+    <a href="#" id="forgotPasswordLink" class="text-green-700 hover:underline">Forgot Password?</a>
+  </p>
+  </div>
+
+  <!-- Forgot Password Modal -->
+  <div id="forgotPasswordModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+      <h3 class="text-xl font-bold mb-4">Forgot Password</h3>
+      <form id="forgotPasswordForm">
+        <input id="forgotEmail" type="email" placeholder="Enter your email" required class="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-green-500">
+        <button id="sendOtpBtn" type="submit" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-600">Send OTP</button>
+      </form>
+      <button id="closeForgotModalBtn" class="mt-4 text-gray-600 hover:text-gray-800">Close</button>
+    </div>
+  </div>
+
+  <!-- OTP Entry Modal -->
+  <div id="otpEntryModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+      <h3 class="text-xl font-bold mb-4">Enter OTP</h3>
+      <input id="otpInput" type="text" maxlength="6" placeholder="Enter OTP" class="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-green-500" />
+      <button id="verifyOtpBtn" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-600">Verify OTP</button>
+      <button id="cancelOtpBtn" class="mt-4 text-gray-600 hover:text-gray-800">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Reset Password Modal -->
+  <div id="resetPasswordModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+      <h3 class="text-xl font-bold mb-4">Reset Password</h3>
+      <input id="newPasswordInput" type="password" placeholder="Enter new password" class="w-full mb-4 p-3 border rounded-lg focus:ring-2 focus:ring-green-500" />
+      <button id="resetPasswordBtn" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-600">Reset Password</button>
+      <button id="cancelResetPasswordBtn" class="mt-4 text-gray-600 hover:text-gray-800">Cancel</button>
+    </div>
+  </div>
+
+  <!-- Message Popup -->
+  <div id="messagePopup" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+      <p id="messagePopupText" class="mb-4 text-green-900 font-semibold"></p>
+      <button id="closeMessagePopup" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-600">Close</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Attach event listeners to buttons and forms
+
+      // Login form
+      const loginForm = document.getElementById('loginForm');
+      if (loginForm) {
+        loginForm.addEventListener('submit', handleLogin);
+      }
+
+      // Forgot password link and form
+      const forgotPasswordLink = document.getElementById('forgotPasswordLink');
+      const forgotPasswordModal = document.getElementById('forgotPasswordModal');
+      const forgotPasswordForm = document.getElementById('forgotPasswordForm');
+      const closeForgotModalBtn = document.getElementById('closeForgotModalBtn');
+
+      if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener('click', (e) => {
+          e.preventDefault();
+          forgotPasswordModal.classList.remove('hidden');
+        });
+      }
+      if (closeForgotModalBtn) {
+        closeForgotModalBtn.addEventListener('click', () => {
+          forgotPasswordModal.classList.add('hidden');
+        });
+      }
+      if (forgotPasswordForm) {
+        forgotPasswordForm.addEventListener('submit', handleForgotPassword);
+      }
+
+      // OTP modal buttons
+      const verifyOtpBtn = document.getElementById('verifyOtpBtn');
+      const cancelOtpBtn = document.getElementById('cancelOtpBtn');
+      if (verifyOtpBtn) {
+        verifyOtpBtn.addEventListener('click', () => {
+          const email = document.getElementById('forgotEmail').value.trim();
+          const otp = document.getElementById('otpInput').value.trim();
+          if (!otp) {
+            showMessagePopup('Please enter the OTP.');
+            return;
+          }
+          fetch('http://localhost:3000/api/verify-otp', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, otp }),
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.error) {
+              showMessagePopup(data.error);
+            } else {
+              showMessagePopup('OTP verified. Please enter your new password.');
+              document.getElementById('otpEntryModal').classList.add('hidden');
+              showResetPasswordModal(email, otp);
+            }
+          })
+          .catch(() => showMessagePopup('Failed to verify OTP. Please try again.'));
+        });
+      }
+      if (cancelOtpBtn) {
+        cancelOtpBtn.addEventListener('click', () => {
+          document.getElementById('otpEntryModal').classList.add('hidden');
+        });
+      }
+
+      // Reset password modal buttons
+      const resetPasswordBtn = document.getElementById('resetPasswordBtn');
+      const cancelResetPasswordBtn = document.getElementById('cancelResetPasswordBtn');
+      if (resetPasswordBtn) {
+        resetPasswordBtn.addEventListener('click', () => {
+          const email = document.getElementById('forgotEmail').value.trim();
+          const otp = document.getElementById('otpInput').value.trim();
+          const newPassword = document.getElementById('newPasswordInput').value.trim();
+          if (!newPassword) {
+            showMessagePopup('Please enter a new password.');
+            return;
+          }
+          fetch('http://localhost:3000/api/reset-password', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, otp, newPassword }),
+          })
+          .then(res => res.json())
+          .then(data => {
+            if (data.error) {
+              showMessagePopup(data.error);
+            } else {
+              showMessagePopup('Password reset successful. You can now login with your new password.');
+              document.getElementById('resetPasswordModal').classList.add('hidden');
+            }
+          })
+          .catch(() => showMessagePopup('Failed to reset password. Please try again.'));
+        });
+      }
+      if (cancelResetPasswordBtn) {
+        cancelResetPasswordBtn.addEventListener('click', () => {
+          document.getElementById('resetPasswordModal').classList.add('hidden');
+        });
+      }
+
+      // Message popup close button
+      const closeMessagePopupBtn = document.getElementById('closeMessagePopup');
+      if (closeMessagePopupBtn) {
+        closeMessagePopupBtn.addEventListener('click', () => {
+          document.getElementById('messagePopup').classList.add('hidden');
+        });
+      }
+    });
+
+    function isLoggedIn() {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
+
+    function getLoggedInUser() {
+      return JSON.parse(localStorage.getItem('loggedInUser'));
+    }
+
+    function updateAuthSection() {
+      const authSection = document.getElementById('auth-section');
+      if (isLoggedIn()) {
+        const user = getLoggedInUser();
+        authSection.innerHTML = `
+          <span class="text-white">Welcome, ${user.name}</span>
+          <button onclick="logout()" class="bg-white text-green-800 px-4 py-2 rounded-lg hover:bg-green-100">Logout</button>
+        `;
+      } else {
+        authSection.innerHTML = `
+          <a href="login.html" class="bg-white text-green-800 px-4 py-2 rounded-lg hover:bg-green-100">Login</a>
+        `;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('loggedInUser');
+      updateAuthSection();
+      showMessagePopup('You have been logged out.');
+    }
+
+    function loadCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const cartCountElem = document.getElementById('cart-count');
+      if (cartCountElem) {
+        cartCountElem.textContent = totalItems;
+      }
+    }
+
+    function handleLogin(event) {
+      event.preventDefault();
+
+      let email = document.getElementById("email").value.trim();
+      let password = document.getElementById("password").value;
+
+     fetch('http://localhost:3000/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          showMessagePopup(data.error);
+        } else {
+          showMessagePopup("Login successful! Welcome, " + data.user.name);
+          localStorage.setItem("loggedInUser", JSON.stringify(data.user)); // save session
+          localStorage.setItem("isLoggedIn", "true"); // set login flag
+
+          // Check if there's a redirect after login
+          const redirectAfterLogin = localStorage.getItem('redirectAfterLogin');
+          if (redirectAfterLogin) {
+            localStorage.removeItem('redirectAfterLogin'); // clear the redirect flag
+            window.location.href = redirectAfterLogin; // redirect to the intended page
+          } else {
+            window.location.href = "index.html"; // redirect to homepage
+          }
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showMessagePopup('An error occurred. Please try again.');
+      });
+    }
+
+    function showMessagePopup(message) {
+      const popup = document.getElementById('messagePopup');
+      const popupText = document.getElementById('messagePopupText');
+      popupText.textContent = message;
+      popup.classList.remove('hidden');
+    }
+  </script>
+
+  <script>
+    function showForgotPassword() {
+      document.getElementById('forgotPasswordModal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('forgotPasswordModal').classList.add('hidden');
+    }
+
+    function handleForgotPassword(event) {
+      event.preventDefault();
+      const email = document.getElementById('forgotEmail').value.trim();
+
+      fetch('http://localhost:3000/api/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          showMessagePopup(data.error);
+        } else {
+          showMessagePopup(data.message);
+          closeModal();
+          showOtpModal(email);
+        }
+      })
+      .catch(() => showMessagePopup('Failed to send OTP. Please try again.'));
+    }
+
+    function showOtpModal(email) {
+      const otpModal = document.getElementById('otpEntryModal');
+      otpModal.classList.remove('hidden');
+
+      const verifyBtn = document.getElementById('verifyOtpBtn');
+      verifyBtn.onclick = () => {
+        const otp = document.getElementById('otpInput').value.trim();
+        if (!otp) {
+          showMessagePopup('Please enter the OTP.');
+          return;
+        }
+
+        fetch('http://localhost:3000/api/verify-otp', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            showMessagePopup(data.error);
+          } else {
+            showMessagePopup('OTP verified. Please enter your new password.');
+            otpModal.classList.add('hidden');
+            showResetPasswordModal(email, otp);
+          }
+        })
+        .catch(() => showMessagePopup('Failed to verify OTP. Please try again.'));
+      };
+    }
+
+    function closeOtpModal() {
+      document.getElementById('otpEntryModal').classList.add('hidden');
+    }
+
+    function showResetPasswordModal(email, otp) {
+      const resetModal = document.getElementById('resetPasswordModal');
+      resetModal.classList.remove('hidden');
+
+      const resetBtn = document.getElementById('resetPasswordBtn');
+      resetBtn.onclick = () => {
+        const newPassword = document.getElementById('newPasswordInput').value.trim();
+        if (!newPassword) {
+          showMessagePopup('Please enter a new password.');
+          return;
+        }
+
+        fetch('http://localhost:3000/api/reset-password', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, otp, newPassword }),
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            showMessagePopup(data.error);
+          } else {
+            showMessagePopup('Password reset successful. You can now login with your new password.');
+            resetModal.classList.add('hidden');
+          }
+        })
+        .catch(() => showMessagePopup('Failed to reset password. Please try again.'));
+      };
+    }
+
+    function closeResetPasswordModal() {
+      document.getElementById('resetPasswordModal').classList.add('hidden');
+    }
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+- [ ] Update "Our Collection" section in index.html with 25 bracelet products and 4 necklace products (29 total unique cards).
+- [ ] Update products array in index.html script for search functionality.
+- [ ] Ensure addToCart onclick includes originalPrice for cart display fix.
+- [ ] Test the updated index.html to verify products display correctly.

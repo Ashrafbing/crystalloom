@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Personalization - Crystal Loom</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <style>
+    @media (max-width: 768px) {
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #065f46;
+        padding: 1rem;
+      }
+      nav ul.show {
+        display: flex;
+      }
+      nav {
+        position: relative;
+      }
+    }
+  </style>
+</head>
+<body class="bg-green-50">
+
+  <nav class="bg-green-800 text-white px-4 md:px-6 py-4 flex items-center justify-between shadow-lg sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <a href="index.html" class="flex items-center gap-2">
+        <img src="Untitled design.png" alt="Crystal Loom Logo" class="h-8 w-8 md:h-10 md:w-10 rounded-full" />
+        <span class="text-lg md:text-xl font-bold whitespace-nowrap">Crystal<br />Loom</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-4 md:gap-6">
+      <a href="index.html" aria-label="Home" class="text-white hover:text-green-300 flex items-center gap-1">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        Home
+      </a>
+    </div>
+  </nav>
+
+  <main class="max-w-md mx-auto py-16 px-6">
+    <h1 class="text-3xl font-bold mb-8 text-center text-green-900">Personalization</h1>
+    <div class="bg-white p-8 rounded-2xl shadow-xl text-center">
+      <button id="customize-btn" class="bg-green-700 text-white py-3 px-6 rounded-lg hover:bg-green-600 font-semibold">
+        Customized
+      </button>
+      <div id="contact-options" class="mt-6 space-y-4 hidden">
+        <a href="https://wa.me/8446408915?text=Hello,%20I%20want%20to%20customize%20my%20product." target="_blank" class="block bg-green-100 text-green-800 py-2 rounded-lg hover:bg-green-200">
+          WhatsApp
+        </a>
+        <a href="https://www.instagram.com/_sk_ashraf_18/" target="_blank" class="block bg-green-100 text-green-800 py-2 rounded-lg hover:bg-green-200">
+          Instagram
+        </a>
+        <a href="mailto:crystalloom9@gmail.com?subject=Customization%20Request&body=Hello,%20I%20want%20to%20customize%20my%20product." class="block bg-green-100 text-green-800 py-2 rounded-lg hover:bg-green-200">
+          Email
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-green-800 text-white text-center py-8 mt-16">
+    <p>&copy; 2025 Crystal Loom. All Rights Reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('customize-btn').addEventListener('click', function () {
+      const options = document.getElementById('contact-options');
+      options.classList.toggle('hidden');
+    });
+  </script>
+</body>
+</html>

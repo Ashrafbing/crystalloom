@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Necklets - Crystal Loom</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
+  <script src="discounts.js"></script>
+  <style>
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (max-width: 640px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      height: 100%;
+    }
+    .product-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .product-title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.2;
+      height: 2.4em; /* 2 lines */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 6px;
+    }
+    .price-section {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .price-original {
+      text-decoration: line-through;
+      color: #888;
+      margin-right: 6px;
+    }
+    .price-discounted {
+      color: #388e3c;
+      font-weight: 700;
+    }
+    .add-to-cart-btn {
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background-color 0.3s ease;
+    }
+    .add-to-cart-btn:hover {
+      background-color: #2e7030;
+    }
+  </style>
+</head>
+<body class="bg-white text-green-900 font-sans">
+
+  <nav class="bg-green-800 text-white px-4 md:px-6 py-4 flex items-center justify-between shadow-lg sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <img src="Untitled design.png" alt="Crystal Loom Logo" class="h-8 w-8 md:h-10 md:w-10 rounded-full" />
+      <span class="text-lg md:text-xl font-bold whitespace-nowrap">Crystal<br>Loom</span>
+    </div>
+    <div class="flex items-center gap-4 md:gap-6">
+      <button id="search-hamburger" class="text-white hover:text-green-300" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </button>
+      <div id="auth-section" class="flex items-center gap-2">
+        <!-- Login/Profile section will be dynamically updated here -->
+      </div>
+      <button id="desktop-menu-hamburger" class="hidden md:flex text-white hover:text-green-300 ml-4" aria-label="Desktop Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="cart.html" id="cart-button" class="relative text-white hover:text-green-300" aria-label="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6z" />
+        </svg>
+        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 hidden">0</span>
+      </a>
+    <button id="menu-hamburger" class="md:hidden text-white hover:text-green-300 relative" aria-label="Menu">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-start pt-20">
+    <div class="bg-white rounded-lg w-11/12 max-w-sm p-6 relative shadow-lg">
+      <button id="mobile-menu-close" aria-label="Close menu" class="absolute top-3 left-1/2 transform -translate-x-1/2 bg-gray-200 hover:bg-gray-300 rounded-full p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="mb-4 relative">
+        <input type="text" id="mobile-search-input" placeholder="Search for..." class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        <div id="mobile-suggestions" class="absolute top-full left-0 right-0 bg-white text-black rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto hidden z-10"></div>
+      </div>
+      <ul class="space-y-4 text-gray-800 text-lg">
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="index.html" class="flex-1">Home</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="shopbycategory.html" class="flex-1">Shop by category</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="cart.html" class="flex items-center gap-2 flex-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="cart-count-mobile" class="bg-red-600 text-white text-xs rounded-full px-2 hidden">0</span>
+            Cart
+          </a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="about.html" class="flex-1">About</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="personal.html" class="flex-1">Account</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="contact.html" class="flex-1">Help</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </nav>
+
+  <div id="desktop-menu-popup" class="hidden absolute top-16 right-4 bg-white rounded-lg shadow-lg w-64 z-50">
+    <ul class="py-2 text-gray-800">
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="index.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Home
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="shopbycategory.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          Shop by category
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="cart.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span id="cart-count-popup" class="bg-red-600 text-white text-xs rounded-full px-2 hidden">0</span>
+          Cart
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="about.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          About
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="personal.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          Account
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="contact.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Help
+        </a>
+      </li>
+    </ul>
+    </div>
+
+  <div id="search-bar" class="hidden bg-green-800 px-6 py-4 flex justify-end">
+    <div class="relative w-full max-w-md">
+      <input type="text" id="search-input" class="w-full px-4 py-2 rounded-lg text-black" placeholder="Search products...">
+      <div id="suggestions" class="absolute top-full left-0 right-0 bg-white text-black rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto hidden">
+      </div>
+    </div>
+  </div>
+  <div class="fixed top-20 left-4 z-40 md:top-24 md:left-6">
+    <button onclick="history.back()" class="hidden md:flex items-center text-green-800 hover:text-green-600 font-bold bg-white p-2 rounded-lg shadow-md transition duration-150">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span class="hidden sm:inline">Back</span>
+    </button>
+  </div>
+  <div id="desktop-menu-popup" class="hidden absolute top-16 right-6 bg-white text-green-900 rounded-md shadow-lg py-4 px-6 z-50 w-48">
+    <ul class="space-y-3">
+      <li><a href="index.html" class="block hover:text-green-600">Home</a></li>
+      <li><a href="shopbycategory.html" class="block hover:text-green-600">Shop by category</a></li>
+      <li><a href="cart.html" class="block hover:text-green-600">Cart</a></li>
+      <li><a href="about.html" class="block hover:text-green-600">About</a></li>
+      <li><a href="personal.html" class="block hover:text-green-600">Account</a></li>
+      <li><a href="contact.html" class="block hover:text-green-600">Help</a></li>
+    </ul>
+  </div>
+  <div id="mobile-menu-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-start pt-20 md:hidden">
+    <div class="bg-white rounded-lg w-11/12 max-w-sm p-6 relative shadow-lg">
+      <button id="mobile-menu-close" aria-label="Close menu" class="absolute top-3 left-1/2 transform -translate-x-1/2 bg-gray-200 hover:bg-gray-300 rounded-full p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="mb-4">
+        <input type="text" id="mobile-search-input" placeholder="Search for..." class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+      </div>
+      <ul class="space-y-4 text-gray-800 text-lg">
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="index.html" class="flex-1">Home</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="shopbycategory.html" class="flex-1">Shop by category</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="cart.html" class="flex-1">Cart</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="about.html" class="flex-1">About</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="personal.html" class="flex-1">Account</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="contact.html" class="flex-1">Help</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="search-bar" class="hidden bg-green-800 px-6 py-4 flex justify-end">
+    <div class="relative w-full max-w-md">
+      <input type="text" id="search-input" class="w-full px-4 py-2 rounded-lg text-black" placeholder="Search products...">
+      <div id="suggestions" class="absolute top-full left-0 right-0 bg-white text-black rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto hidden">
+      </div>
+    </div>
+  </div>
+
+  <section class="py-16 px-10">
+    <h2 class="text-3xl font-bold text-center mb-10">Necklets Collection</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <a href="product.html?id=29">
+          <img src="images/necklace21.jpg" alt="Elegant Crystal Necklet" class="product-image" />
+          <h3 class="product-title">Elegant Crystal Necklet</h3>
+          <div class="price-section">
+            <span class="price-original">₹4,299</span>
+            <span class="price-discounted">₹3,999</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Elegant Crystal Necklet', price: 3999, image: 'images/Necklace.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=30">
+          <img src="images/necklace211.jpg" alt="Gemstone Necklet" class="product-image" />
+          <h3 class="product-title">Gemstone Necklet</h3>
+          <div class="price-section">
+            <span class="price-original">₹5,499</span>
+            <span class="price-discounted">₹4,999</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Gemstone Necklet', price: 4999, image: 'images/necklet2.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=31">
+          <img src="images/image 2.jpg" alt="Royal Emerald Ring" class="product-image">
+          <h3 class="product-title">Royal Emerald Ring</h3>
+          <div class="price-section">
+            <span class="price-original">₹7,999</span>
+            <span class="price-discounted">₹7,199</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Royal Emerald Ring', price: 7199, image: 'images/image 2.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=32">
+          <img src="images/image 2.jpg" alt="Royal Emerald Ring" class="product-image">
+          <h3 class="product-title">Royal Emerald Ring</h3>
+          <div class="price-section">
+            <span class="price-original">₹7,999</span>
+            <span class="price-discounted">₹7,199</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Royal Emerald Ring', price: 7199, image: 'images/image 2.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=33">
+          <img src="images/image 2.jpg" alt="Royal Emerald Ring" class="product-image">
+          <h3 class="product-title">Royal Emerald Ring</h3>
+          <div class="price-section">
+            <span class="price-original">₹7,999</span>
+            <span class="price-discounted">₹7,199</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Royal Emerald Ring', price: 7199, image: 'images/image 2.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=34">
+          <img src="images/image 2.jpg" alt="Royal Emerald Ring" class="product-image">
+          <h3 class="product-title">Royal Emerald Ring</h3>
+          <div class="price-section">
+            <span class="price-original">₹7,999</span>
+            <span class="price-discounted">₹7,199</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Royal Emerald Ring', price: 7199, image: 'images/image 2.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-1 px-10">
+    <h2 class="text-3xl font-bold text-center mb-10">Suggested Products</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <a href="product.html?id=1">
+          <img src="images/9f2cf479e4a8401_file_00000000c3fc61faa1720cd6827fddd2_wm (1).jpg" alt="Crystal Bracelet" class="product-image" />
+          <h3 class="product-title">Crystal Bracelet</h3>
+          <div class="price-section">
+            <span class="price-original">₹3,999</span>
+            <span class="price-discounted">₹3,599</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Crystal Bracelet', price: 3599, image: 'images/9f2cf479e4a8401_file_00000000c3fc61faa1720cd6827fddd2_wm (1).jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=2">
+          <img src="images/1757923709133.jpg" alt="Gemstone Necklace" class="product-image" />
+          <h3 class="product-title">Gemstone Necklace</h3>
+          <div class="price-section">
+            <span class="price-original">₹6,499</span>
+            <span class="price-discounted">₹6,174</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Gemstone Necklace', price: 6174, image: 'images/1757923709133.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=3">
+          <img src="images/1757956065069.jpg" alt="Elegant Ring" class="product-image" />
+          <h3 class="product-title">Elegant Ring</h3>
+          <div class="price-section">
+            <span class="price-original">₹4,999</span>
+            <span class="price-discounted">₹4,499</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Elegant Ring', price: 4499, image: 'images/1757956065069.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+      <div class="product-card">
+        <a href="product.html?id=4">
+          <img src="images/1758130493591.jpg" alt="Crystal Earrings" class="product-image" />
+          <h3 class="product-title">Crystal Earrings</h3>
+          <div class="price-section">
+            <span class="price-original">₹2,999</span>
+            <span class="price-discounted">₹2,849</span>
+          </div>
+        </a>
+        <button onclick="addToCart({ name: 'Crystal Earrings', price: 2849, image: 'images/1758130493591.jpg' })" class="add-to-cart-btn">Add to Cart</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-green-800 text-white text-center py-8 mt-16">
+    <p>&copy; 2025 Crystal Loom. All Rights Reserved.</p>
+  </footer>
+
+  <div id="notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ease-out hidden">
+    <span id="notification-message"></span>
+  </div>
+
+  <script>
+    function isLoggedIn() {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
+
+    const desktopMenuHamburger = document.getElementById('desktop-menu-hamburger');
+    const desktopMenuPopup = document.getElementById('desktop-menu-popup');
+
+    desktopMenuHamburger.addEventListener('click', () => {
+      desktopMenuPopup.classList.toggle('hidden');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!desktopMenuPopup.contains(e.target) && !desktopMenuHamburger.contains(e.target)) {
+        desktopMenuPopup.classList.add('hidden');
+      }
+    });
+
+    function getLoggedInUser() {
+      return JSON.parse(localStorage.getItem('loggedInUser')) || {};
+    }
+
+    function updateAuthSection() {
+      const authSection = document.getElementById('auth-section');
+      if (isLoggedIn()) {
+        const user = getLoggedInUser();
+        authSection.innerHTML = `
+          <div class="relative">
+            <button id="profile-btn" class="flex items-center gap-2 text-white hover:text-green-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 rounded-full bg-white text-green-800 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span>${user.name}</span>
+            </button>
+            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 text-green-900">
+              <a href="personal.html?from=settings" class="block px-4 py-2 text-sm hover:bg-green-100">Account Settings</a>
+              <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm hover:bg-green-100">Logout</button>
+            </div>
+          </div>
+        `;
+        document.getElementById('profile-btn').addEventListener('click', function (e) {
+          e.stopPropagation();
+          document.getElementById('profile-dropdown').classList.toggle('hidden');
+        });
+        document.addEventListener('click', function () {
+          document.getElementById('profile-dropdown').classList.add('hidden');
+        });
+      } else {
+        authSection.innerHTML = `
+          <a href="login.html" class="bg-white text-green-800 px-4 py-2 rounded-lg hover:bg-green-100">Login</a>
+        `;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('loggedInUser');
+      updateAuthSection();
+      alert('You have been logged out.');
+    }
+
+    function loadCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalItems = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      const cartCountElement = document.getElementById('cart-count');
+      if (totalItems > 0) {
+        cartCountElement.textContent = totalItems;
+        cartCountElement.classList.remove('hidden');
+      } else {
+        cartCountElement.classList.add('hidden');
+      }
+    }
+
+    function addToCart(product) {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      let item = cart.find((i) => i.name === product.name);
+      if (item) {
+        item.qty++;
+      } else {
+        cart.push({ ...product, qty: 1 });
+      }
+      localStorage.setItem('cart', JSON.stringify(cart));
+      loadCartCount();
+      showNotification(`${product.name} added to cart!`);
+    }
+
+    function showNotification(message) {
+      const notification = document.getElementById('notification');
+      const notificationMessage = document.getElementById('notification-message');
+
+      notificationMessage.textContent = message;
+      notification.classList.remove('hidden');
+
+      setTimeout(() => {
+        notification.classList.add('hidden');
+      }, 3000);
+    }
+
+    const menuHamburger = document.getElementById('menu-hamburger');
+    const searchHamburger = document.getElementById('search-hamburger');
+    const searchBar = document.getElementById('search-bar');
+    const mobileMenu = document.getElementById('mobile-menu-modal');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+    menuHamburger.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
+
+    mobileMenuClose.addEventListener('click', () => {
+      mobileMenu.classList.add('hidden');
+    });
+
+    searchHamburger.addEventListener('click', () => {
+      searchBar.classList.toggle('hidden');
+    });
+
+    window.onload = function () {
+      updateAuthSection();
+      loadCartCount();
+    };
+    window.addEventListener('storage', function () {
+      updateAuthSection();
+      loadCartCount();
+    });
+  </script>
+</body>
+</html>

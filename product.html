@@ -1,0 +1,1926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="product-title">Product Details - Crystal Loom</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <style>
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      gap: 16px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    @media (max-width: 640px) {
+      .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    .product-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgb(0 0 0 / 0.1);
+      display: flex;
+      flex-direction: column;
+      padding: 12px;
+      height: 100%;
+    }
+    .product-image {
+      width: 100%;
+      height: 160px;
+      object-fit: cover;
+      border-radius: 6px;
+      margin-bottom: 8px;
+    }
+    .product-title {
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.2;
+      height: 2.4em; /* 2 lines */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      margin-bottom: 6px;
+    }
+    .price-section {
+      font-size: 14px;
+      margin-bottom: 6px;
+    }
+    .price-original {
+      text-decoration: line-through;
+      color: #888;
+      margin-right: 6px;
+    }
+    .price-discounted {
+      color: #388e3c;
+      font-weight: 700;
+    }
+    .add-to-cart-btn {
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      align-self: flex-start;
+      transition: background-color 0.3s ease;
+    }
+    .add-to-cart-btn:hover {
+      background-color: #2e7030;
+    }
+    .quantity-btn {
+      background-color: #388e3c;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 6px 12px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .quantity-btn:hover {
+      background-color: #2e7030;
+    }
+  </style>
+  <script src="discounts.js"></script>
+</head>
+<body class="bg-white text-green-900 font-sans">
+
+   <nav class="bg-green-800 text-white px-4 md:px-6 py-4 flex items-center justify-between shadow-lg sticky top-0 z-50">
+    <div class="flex items-center gap-2">
+      <img src="Untitled design.png" alt="Crystal Loom Logo" class="h-8 w-8 md:h-10 md:w-10 rounded-full" />
+      <span class="text-lg md:text-xl font-bold whitespace-nowrap">Crystal<br>Loom</span>
+    </div>
+    <div class="flex items-center gap-4 md:gap-6">
+      <button id="search-hamburger" class="text-white hover:text-green-300" aria-label="Search">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"></circle>
+          <path d="m21 21-4.35-4.35"></path>
+        </svg>
+      </button>
+      <div id="auth-section" class="flex items-center gap-2">
+        <!-- Login/Profile section will be dynamically updated here -->
+      </div>
+      <button id="desktop-menu-hamburger" class="hidden md:flex text-white hover:text-green-300 ml-4" aria-label="Desktop Menu">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="cart.html" id="cart-button" class="relative text-white hover:text-green-300" aria-label="Cart">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 md:h-8 md:w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1" />
+          <circle cx="20" cy="21" r="1" />
+          <path d="M1 1h4l2.68 13.39a2 2 0 002 1.61h9.72a2 2 0 002-1.61L23 6H6z" />
+        </svg>
+        <span id="cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs rounded-full px-2 hidden">0</span>
+      </a>
+    <button id="menu-hamburger" class="md:hidden text-white hover:text-green-300 relative" aria-label="Menu">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex justify-center items-start pt-20">
+    <div class="bg-white rounded-lg w-11/12 max-w-sm p-6 relative shadow-lg">
+      <button id="mobile-menu-close" aria-label="Close menu" class="absolute top-3 left-1/2 transform -translate-x-1/2 bg-gray-200 hover:bg-gray-300 rounded-full p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-gray-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+      <div class="mb-4 relative">
+        <input type="text" id="mobile-search-input" placeholder="Search for..." class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-green-600" />
+        <div id="mobile-suggestions" class="absolute top-full left-0 right-0 bg-white text-black rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto hidden z-10"></div>
+      </div>
+      <ul class="space-y-4 text-gray-800 text-lg">
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="index.html" class="flex-1">Home</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="shopbycategory.html" class="flex-1">Shop by category</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="cart.html" class="flex items-center gap-2 flex-1">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span id="cart-count-mobile" class="bg-red-600 text-white text-xs rounded-full px-2 hidden">0</span>
+            Cart
+          </a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="about.html" class="flex-1">About</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="personal.html" class="flex-1">Account</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+        <li class="flex justify-between items-center cursor-pointer hover:text-green-600">
+          <a href="contact.html" class="flex-1">Help</a>
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </li>
+      </ul>
+    </div>
+  </div>
+  </nav>
+
+  <div id="desktop-menu-popup" class="hidden absolute top-16 right-4 bg-white rounded-lg shadow-lg w-64 z-50">
+    <ul class="py-2 text-gray-800">
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="index.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Home
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="shopbycategory.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+          </svg>
+          Shop by category
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="cart.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span id="cart-count-popup" class="bg-red-600 text-white text-xs rounded-full px-2 hidden">0</span>
+          Cart
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="about.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          About
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="personal.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+          </svg>
+          Account
+        </a>
+      </li>
+      <li class="px-4 py-2 hover:bg-gray-100 cursor-pointer">
+        <a href="contact.html" class="flex items-center gap-2">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+          </svg>
+          Help
+        </a>
+      </li>
+    </ul>
+    </div>
+
+  <div id="search-bar" class="hidden bg-green-800 px-6 py-4 flex justify-end">
+    <div class="relative w-full max-w-md">
+      <input type="text" id="search-input" class="w-full px-4 py-2 rounded-lg text-black" placeholder="Search products...">
+      <div id="suggestions" class="absolute top-full left-0 right-0 bg-white text-black rounded-lg shadow-lg mt-1 max-h-60 overflow-y-auto hidden">
+      </div>
+    </div>
+  </div>
+  <!-- Back Button -->
+  <div class="fixed top-20 left-4 z-40 md:top-24 md:left-6">
+    <button onclick="history.back()" class="hidden md:flex items-center text-green-800 hover:text-green-600 font-bold bg-white p-2 rounded-lg shadow-md transition duration-150">
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+      </svg>
+      <span class="hidden sm:inline">Go Back</span>
+    </button>
+  </div>
+  <section class="py-16 px-10 flex flex-col md:flex-row gap-10 items-start max-w-5xl mx-auto">
+    
+    <div class="flex-1">
+      <div class="relative mb-4">
+        <img id="main-product-image" src="" alt="Product Image" class="w-full rounded-lg shadow-lg">
+        <button id="prev-btn" title="Previous Image" class="absolute top-1/2 left-2 -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full shadow hover:bg-opacity-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+          </svg>
+        </button>
+        <button id="next-btn" title="Next Image" class="absolute top-1/2 right-2 -translate-y-1/2 bg-white bg-opacity-70 p-2 rounded-full shadow hover:bg-opacity-100 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-800" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </button>
+      </div>
+
+      <div id="image-gallery" class="flex gap-4 overflow-x-auto">
+        </div>
+    </div>
+    
+    <div class="flex-1">
+      <h1 id="product-name" class="text-4xl font-bold mb-4"></h1>
+      <p id="product-price" class="text-green-700 font-bold text-xl mb-6"></p>
+
+      <div class="flex items-center gap-4 mb-6">
+        <label for="quantity" class="text-lg font-semibold">Quantity:</label>
+        <button id="decrease-quantity" class="quantity-btn">-</button>
+        <input type="number" id="quantity" value="1" min="1" class="w-20 p-2 border rounded-lg text-center">
+        <button id="increase-quantity" class="quantity-btn">+</button>
+      </div>
+
+      <button id="add-to-cart-btn" class="bg-green-700 text-white px-8 py-4 rounded-lg font-semibold hover:bg-green-600 transition-colors mb-6">Add to Cart</button>
+
+      <p id="product-description" class="text-lg leading-relaxed"></p>
+
+    </div>
+  </section>
+
+  <!-- FAQ Accordion Section -->
+  <section class="py-1 px-125 max-w-full mx-auto">
+    <div class="bg-green-600 rounded-lg p-8 text-white">
+      <h2 class="text-2xl font-bold text-center mb-4">You Asked, We Answered</h2>
+      <p class="text-center mb-8 text-base">Everything you need to know before you bring the magic home.</p>
+
+      <div class="space-y-1">
+        <!-- FAQ 1 -->
+        <div class="faq-item">
+          <button class="faq-question flex justify-between items-center w-full text-left text-base font-semibold py-4 px-6 bg-green-700 rounded-lg hover:bg-green-500 transition-colors">
+            <span>How to use</span>
+            <span class="faq-arrow text-xl">▼</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="px-6 py-4 text-xs bg-green-700 rounded-b-lg">
+              <p>To use your crystal bracelet, simply slide it onto your wrist and adjust for a comfortable fit. Wear it daily to enjoy its aesthetic appeal and potential energy benefits. For best results, wear it on your non-dominant hand to allow the crystals to interact with your energy field.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 2 -->
+        <div class="faq-item">
+          <button class="faq-question flex justify-between items-center w-full text-left text-lg font-semibold py-4 px-6 bg-green-700 rounded-lg hover:bg-green-500 transition-colors">
+            <span>How to care bracelets and crystals</span>
+            <span class="faq-arrow text-2xl">▼</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="px-6 py-4 text-sm bg-green-700 rounded-b-lg">
+              <p>Clean your crystal bracelet gently with a soft cloth and mild soap. Avoid harsh chemicals or ultrasonic cleaners. Store in a soft pouch when not wearing to prevent scratches. For crystal care, cleanse under running water or moonlight periodically to maintain their energetic properties.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 3 -->
+        <div class="faq-item">
+          <button class="faq-question flex justify-between items-center w-full text-left text-lg font-semibold py-4 px-6 bg-green-700 rounded-lg hover:bg-green-500 transition-colors">
+            <span>How to charge bracelets</span>
+            <span class="faq-arrow text-2xl">▼</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="px-6 py-4 text-sm bg-green-700 rounded-b-lg">
+              <p>Charge your crystal bracelet by placing it in direct sunlight for a few hours or under a full moon overnight. You can also bury it in the earth for 24 hours or use sound vibrations from a singing bowl. Charging helps restore the crystal's natural energy and enhances its healing properties.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 4 -->
+        <div class="faq-item">
+          <button class="faq-question flex justify-between items-center w-full text-left text-lg font-semibold py-4 px-6 bg-green-700 rounded-lg hover:bg-green-500 transition-colors">
+            <span>How crystal works with aura</span>
+            <span class="faq-arrow text-2xl">▼</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="px-6 py-4 text-sm bg-green-700 rounded-b-lg">
+              <p>Crystals are believed to interact with your aura by absorbing, amplifying, or balancing energy. Different crystals resonate with different chakras, helping to clear blockages, promote healing, and enhance overall well-being. Wearing crystals close to your body allows their vibrations to harmonize with your personal energy field.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 5 -->
+        <div class="faq-item">
+          <button class="faq-question flex justify-between items-center w-full text-left text-lg font-semibold py-4 px-6 bg-green-700 rounded-lg hover:bg-green-500 transition-colors">
+            <span>How can you wear crystal bracelet</span>
+            <span class="faq-arrow text-2xl">▼</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="px-6 py-4 text-sm bg-green-700 rounded-b-lg">
+              <p>You can wear your crystal bracelet on either wrist, but traditionally it's worn on the left for receiving energy and right for giving. Stack multiple bracelets for layered looks, or wear alone for a minimalist style. It's suitable for everyday wear, yoga, meditation, or special occasions.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- FAQ 6 -->
+        <div class="faq-item">
+          <button class="faq-question flex justify-between items-center w-full text-left text-lg font-semibold py-4 px-6 bg-green-700 rounded-lg hover:bg-green-500 transition-colors">
+            <span>How much time for delivery</span>
+            <span class="faq-arrow text-2xl">▼</span>
+          </button>
+          <div class="faq-answer max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
+            <div class="px-6 py-4 text-sm bg-green-700 rounded-b-lg">
+              <p>Standard delivery takes 5-7 business days within India. Express delivery is available for 2-3 business days. International shipping may take 10-15 business days depending on the destination. You'll receive a tracking number once your order ships.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Suggestions Grid -->
+  <section class="py-1 px-10">
+    <h2 class="text-3xl font-bold text-center mb-10">You may also like</h2>
+    <div class="product-grid">
+      <!-- Product cards will be dynamically inserted here -->
+    </div>
+  </section>
+
+  <section class="py-16 px-10">
+    <h2 class="text-3xl font-bold text-center mb-10">Suggested Products</h2>
+    <div class="product-grid">
+      <div class="product-card">
+        <a href="product.html?id=1">
+          <img src="images/image 3 .jpg" alt="Crystal Bracelet" class="product-image">
+          <h3 class="product-title">Crystal Bracelet</h3>
+<div class="price-section">
+<span class="price-original">₹3,999</span>
+<span class="price-discounted">₹3,599</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Crystal Bracelet', price: 3599, originalPrice: 3999, image: 'images/image 3 .jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=2">
+          <img src="images/image 4 .jpg" alt="Gemstone Necklace" class="product-image">
+          <h3 class="product-title">Gemstone Necklace</h3>
+<div class="price-section">
+<span class="price-original">₹6,499</span>
+<span class="price-discounted">₹6,174</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Gemstone Necklace', price: 6174, originalPrice: 6499, image: 'images/image 4 .jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=3">
+          <img src="images/image 5 .jpg" alt="Elegant Ring" class="product-image">
+          <h3 class="product-title">Elegant Ring</h3>
+<div class="price-section">
+<span class="price-original">₹4,999</span>
+<span class="price-discounted">₹4,499</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Elegant Ring', price: 4499, originalPrice: 4999, image: 'images/image 5 .jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=4">
+          <img src="images/image 6 .jpg" alt="Crystal Earrings" class="product-image">
+          <h3 class="product-title">Crystal Earrings</h3>
+<div class="price-section">
+<span class="price-original">₹2,999</span>
+<span class="price-discounted">₹2,849</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Crystal Earrings', price: 2849, originalPrice: 2999, image: 'images/image 6 .jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=5">
+          <img src="images/image 7.jpg" alt="Healing Pendant" class="product-image">
+          <h3 class="product-title">Healing Pendant</h3>
+<div class="price-section">
+<span class="price-original">₹3,499</span>
+<span class="price-discounted">₹3,149</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Healing Pendant', price: 3149, originalPrice: 3499, image: 'images/image 7.jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=6">
+          <img src="images/image 10.jpg" alt="Crystal Choker" class="product-image">
+          <h3 class="product-title">Crystal Choker</h3>
+<div class="price-section">
+<span class="price-original">₹5,999</span>
+<span class="price-discounted">₹5,699</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Crystal Choker', price: 5699, originalPrice: 5999, image: 'images/image 10.jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=7">
+          <img src="images/image 12.jpg" alt="Gemstone Brooch" class="product-image">
+          <h3 class="product-title">Gemstone Brooch</h3>
+<div class="price-section">
+<span class="price-original">₹4,499</span>
+<span class="price-discounted">₹4,049</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Gemstone Brooch', price: 4049, originalPrice: 4499, image: 'images/image 12.jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=8">
+          <img src="images/image 13.jpg" alt="Crystal Anklet" class="product-image">
+          <h3 class="product-title">Crystal Anklet</h3>
+<div class="price-section">
+<span class="price-original">₹2,499</span>
+<span class="price-discounted">₹2,374</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Crystal Anklet', price: 2374, originalPrice: 2499, image: 'images/image 13.jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+
+      <div class="product-card">
+        <a href="product.html?id=9">
+          <img src="images/1758654327334.jpg" alt="Crystal Tiara" class="product-image">
+          <h3 class="product-title">Crystal Tiara</h3>
+<div class="price-section">
+<span class="price-original">₹8,999</span>
+<span class="price-discounted">₹8,099</span>
+</div>
+</a>
+<button onclick="addToCart({ name: 'Crystal Tiara', price: 8099, originalPrice: 8999, image: 'images/1758654327334.jpg', qty: 1 })" class="add-to-cart-btn">Add to Cart</button>
+</div>
+    </div>
+  </section>
+
+  <footer class="bg-green-800 text-white text-center py-8 mt-16">
+    <p>&copy; 2025 Crystal Loom. All Rights Reserved.</p>
+  </footer>
+  
+  <div id="notification" class="fixed bottom-5 left-1/2 -translate-x-1/2 bg-green-700 text-white px-6 py-3 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ease-out hidden">
+    <span id="notification-message"></span>
+  </div>
+
+  <script>
+    const products = {
+      '1': {
+        name: 'Golden Pyrite ',
+        price: 1199,
+        discount: 41.7,
+        description: `<p>Golden Pyrite, also known as Fool’s Gold, is a powerful crystal of abundance, confidence, and protection .</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- It attracts wealth, prosperity, and good luck.</li>
+<li>- Enhances willpower, motivation, and self-confidence.</li>
+<li>- Pyrite also boosts mental clarity and focus.</li>
+<li>- Attracts financial growth.</li>
+<li>- Encourages leadership and ambition.</li>
+<li>- Enhances networking and communication.</li>
+<li>- Protects from negativity and competition.</li>
+<li>- Boosts confidence in decision-making.</li>
+</ul>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product1(1).jpg','images/product1(2).jpg' ,'images/product1(3).jpg','images/product1(4).jpg','images/product1(5).jpg']
+      },
+      '2': {
+        name: 'Howlite',
+        price: 1099,
+        discount: 45.5,
+        description: `<p>Howlite is primarily found in Canada. It is a calming and soothing stone known for its gentle energy that reduces stress and anxiety. It helps improve focus, patience, and emotional balance.</p>
+
+<p><strong>Benefits:</strong></p>
+<ul>
+<li>- Reduces stress and anxiety.</li>
+<li>- Improves sleep quality.</li>
+<li>- Enhances patience and focus.</li>
+<li>- Promotes positive energy.</li>
+<li>- Encourages persistence.</li>
+<li>- Attracts financial opportunities.</li>
+</ul>
+
+
+<p><strong>Embrace the power of gemstones order your necklace now!</strong></p>`,
+        images: ['images/product2(1).jpg','images/product2(2).jpg' ,'images/product2(3).jpg','images/product2(4).jpg','images/product2(5).jpg']
+      },
+      '3': {
+        name: 'Tiger eye',
+        price: 1199,
+        discount: 41.7,
+        description: `<p>Tiger Eye was first discovered and primarily sourced in South Africa Tiger Eye is a beautiful golden-brown crystal with a silky, lustrous appearance, known for its distinctive chatoyancy, which resembles the eye of a tiger. This stone is widely regarded as a powerful grounding and protective stone that balances emotional energy and enhances mental clarity.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Enhances confidence and self-esteem.</li>
+<li>- Provides mental clarity and focus.</li>
+<li>- Reduces anxiety and fear.</li>
+<li>- Attracts wealth, abundance, and prosperity.</li>
+<li>- Promotes courage and determinatio</li>
+<li>- Balances emotional energy and reduces stress.</li>
+<li>- Encourages good decision-making and problem-solving.</li>
+<li>-  Strengthens personal willpower and motivation.</li>
+</ul>
+
+
+<p><strong>Elevate your elegance – add this ring to your cart today!</strong></p>`,
+        images: ['images/product3(1).jpg','images/product3(2).jpg' ,'images/product3(3).jpg','images/product3(4).jpg','images/product3(5).jpg']
+      },
+      '4': {
+        name: 'Amethyst',
+        price: 1199,
+        discount: 41.7,
+        description: `<p>Amethyst was first discovered in ancient Greece and Egypt.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Amethyst is a stunning purple crystal that has been cherished for centuries for its beauty and spiritual properties. Known as a powerful protective and healing stone, Amethyst is believed to calm the mind, relieve stress, and promote emotional balance.</li>
+<li>- Relieves stress and anxiety.</li>
+<li>- Promotes emotional balance and calmness.</li>
+<li>- Improves focus and mental clarity.</li>
+<li>- Encourages restful and peaceful sleep.</li>
+<li>- Protects against negative energy.</li>
+<li>- Supports physical healing and detoxification.</li>
+<li>- Boosts creativity and decision-making.</li>
+<li>- Brings inner peace and harmony.</li>
+<li></li>
+</ul>
+
+
+<p><strong>Sparkle with confidence – grab your pair now!</strong></p>`,
+        images: ['images/product4(1).jpg','images/product4(2).jpg' ,'images/product4(3).jpg','images/product4(4).jpg','images/product4(5).jpg']
+      },
+      '5': {
+        name: 'Rose Quartz',
+        price: 1199,
+        discount: 41.7,
+        description: `<p>Rose Quartz was first discovered in Madagascar, Brazil, India, and South Africa.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Rose Quartz is a beautiful pink crystal known as the stone of unconditional love and emotional healing. It is often associated with the heart chakra and is believed to attract love, enhance self-love, and strengthen relationships</li>
+<li>- Attracts love and strengthens relationships.</li>
+<li>- Encourages self-love and self-acceptance.</li>
+<li>- Promotes emotional healing and reduces stress.</li>
+<li>- Enhances compassion and empathy toward others.</li>
+<li>- Helps release anger, resentment, and emotional pain.</li>
+<li>- Balances the heart chakra and emotional energy.</li>
+<li>- Can enhance meditation and spiritual growth.</li>
+<li>- Believed to support physical healing, especially heart and skin health.</li>
+</ul>
+
+
+<p><strong>Heal and thrive – add this pendant to your journey today!</strong></p>`,
+        images: ['images/product5(1).jpg','images/product5(2).jpg','images/product5(3).jpg','images/product5(4).jpg','images/product5(5).jpg']
+      },
+      '6': {
+        name: 'Green Aventurine',
+        price: 1199,
+        discount: 41.7,
+        description: `<p>- Green Aventurine was first discovered in India, which is still one of the main sources of this beautiful stone today. It is also found in Brazil, China, Russia, and Tanzania. Green Aventurine is a beautiful green crystal known as the “Stone of Opportunity” and is often associated with luck, success, and prosperity.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Attracts luck, wealth, and prosperity.</li>
+<li>- Brings new opportunities for success and growth.</li>
+<li>- Encourages confidence and optimism.</li>
+<li>- Helps release stress, fear, and negative emotions.</li>
+<li>- Balances the heart chakra and supports love energy.</li>
+<li>- Boosts creativity and motivation.</li>
+<li>- Brings balance, harmony, and positive energy into life.</li>
+<li>- Improves decision-making with calm and clarity.</li>
+</ul>
+
+
+<p><strong>Command attention – secure your choker now!</strong></p>`,
+        images: ['images/product6(1).jpg','images/product6(2).jpg','images/product6(3).jpg','images/product6(4).jpg','images/product6(5).jpg']
+      },
+      '7': {
+        name: 'Lava stone', 
+        price: 1199,
+        discount: 41.7,
+        description: `<p> It is most commonly found in places like Hawaii, Iceland, Italy, India, and Mexico, where volcanic activity is strong.- Lava Stone, also known as Basalt, is a powerful grounding stone formed from molten lava that has cooled after a volcanic eruption.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Helps stay emotionally grounded and calm.</li>
+<li>- Boosts inner strength and courage.</li>
+<li>- Reduces stress, anger, and anxiety.</li>
+<li>- Encourages personal growth and transformation.</li>
+<li>- Builds confidence and motivation.</li>
+<li>- Works well with essential oils for relaxation.</li>
+<li>- Inspires creativity and fresh ideas for business growth.</li>
+<li>- Attracts stability and strong foundations in business</li>
+</ul>
+
+
+<p><strong>Claim your royalty – order this majestic ring today!</strong></p>`,
+        images: ['images/product7(1).jpg','images/product7(2).jpg','images/product7(3).jpg','images/product7(4).jpg','images/product7(5).jpg']
+      },
+      '8': {
+        name: 'pyrite ',
+        price: 1299,
+        discount: 41.7,
+        description: `<p>Pyrite was known to the Greeks and Romans, who used it to create sparks for fire (the name pyrite comes from the Greek word "pyr", meaning fire).</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Pyrite is a metallic-looking stone believed to attract wealth, abundance, confidence, and protection, making it popular in business and money-related spiritual practices.</li>
+<li>- Attracts wealth and prosperity, making it ideal for financial growth.</li>
+<li>- Boosts confidence and decision-making, helping entrepreneurs take bold actions.</li>
+<li>-  Encourages leadership qualities, essential for business success.</li>
+<li>- Supports manifestation of financial goals, especially when used with intention.</li>
+<li>- Protects Against Negativit</li>
+<li>- Balances Solar Plexus Chakra</li>
+<li>- Promotes discipline and time management</li>
+<li>- Creates a sense of control and power.</li>
+</ul>
+
+
+<p><strong>Invest in timeless beauty – add these studs to your collection!</strong></p>`,
+        images: ['images/product8(1).jpg','images/product8(2).jpg','images/product8(3).jpg','images/product8(4).jpg','images/product8(5).jpg']
+      },
+      '9': {
+        name: 'Clear Quartz',
+        price: 1099,
+        discount: 45.5,
+        description: `<p>Clear Quartz is a powerful and versatile crystal known for its ability to amplify energy, enhance clarity, and support manifestation. It is often used in spiritual practices, meditation, and business settings to boost focus, decision-making, and strategic thinking.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>Freshwater cultured pearls</li>
+<li>- Enhances mental clarity.</li>
+<li>- Amplifies energy and intentions, helping.</li>
+<li>- Improves focus and concentration.</li>
+<li>- Cleanses and charges other crystals.</li>
+<li>- Improves memory.</li>
+<li>- Enhances Focus Sharpens concentration during meetings, projects, and time-sensitive tasks.</li>
+<li>- Improves Memory & Recall.</li>
+<li>- Promotes Positive Energy Creates an uplifting workspace vibe, attracting opportunities and productive energy.</li>
+</ul>
+
+
+<p><strong>Inherit elegance – bring home this pearl masterpiece now!</strong></p>`,
+        images: ['images/product9(1).jpg','images/product9(2).jpg','images/product9(3).jpg','images/product9(4).jpg','images/product9(5).jpg']
+      },
+      '10': {
+        name: ' Golden Sunstone',
+        price: 1199,
+        discount: 41.7,
+        description: `<p> Norway and India – Historically among the earliest sources of Sunstone.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Golden Sunstone is a radiant, sparkling crystal known for its uplifting energy and powerful connection to the sun. Belonging to the feldspar family, this stone often shimmers with flashes of gold, red, or orange due to inclusions of hematite or goethite. Historically associated with light, power, and leadership.</li>
+<li>- Boosts leadership qualities, helping you take charge with confidence.</li>
+<li>- Inspires motivation and drive, pushing you to achieve business goals</li>
+<li>- Attracts abundance and success, supporting financial growth</li>
+<li>- Promotes a positive mindset, improving workplace morale.</li>
+<li>- Builds self-confidence, essential for presentations and networking.</li>
+<li>- Stimulates vitality and energy, reducing burnout and boosting stamina.</li>
+<li>- Awakens the solar plexus chakra.</li>
+<li>- Enhances meditation, by grounding light energy into the physical body.</li>
+</ul>
+
+
+<p><strong>Elevate your look – add this crystal necklet to your collection!</strong></p>`,
+        images: ['images/product10(1).jpg','images/product10(2).jpg' ,'images/product10(3).jpg','images/product10(4).jpg','images/product10(5).jpg']
+      },
+      '11': {
+        name: 'Selenite stoen',
+        price: 1199,
+        discount: 41.7,
+        description: `<p>- Selenite was first identified in ancient Greece, where it was named after the moon goddess Selene due to its moon-like glow.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Selenite is a translucent, white or colorless variety of the mineral gypsum, known for its ethereal glow and delicate structure. Named after the Greek goddess of the moon, Selene, selenite is often associated with purity, clarity, and spiritual connection. This soft crystal is found in various parts of the world.</li>
+<li>- Promotes mental clarity and focus.</li>
+<li>- Aids in spiritual growth and connection.</li>
+<li>- Cleanses and charges other crystals.</li>
+<li>-  Helps remove negative energy.</li>
+<li>- Supports meditation and mindfulness.</li>
+<li>- Balances and aligns the chakras.</li>
+<li>- Supports emotional healing and release.</li>
+<li>- Encourages peace and calmness.</li>
+<li>- Enhances intuition and insight.</li>
+
+
+<p><strong>Embrace gemstone power – order your necklet today!</strong></p>`,
+        images: ['images/product11(1).jpg','images/product11(2).jpg' ,'images/product11(3).jpg','images/product11(4).jpg','images/product11(5).jpg']
+      },
+      '12': {
+        name: 'Serpentine',
+        price: 1199,
+        discount: 41.7,
+        description: `<p>Serpentine has been known and used since ancient times, with some of the earliest known sources found in ancient Greece, Rome, and China.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Serpentine is a green-hued metamorphic stone composed of various magnesium silicate minerals, often resembling the skin of a snake—hence its name, which comes from the Latin "serpens".</li>
+<li>- Awakens and balances kundalini energy.</li>
+<li>- Provides strong protective energy.</li>
+<li>- Supports detoxification and physical healing</li>
+<li>- Helps resolve past life issues and trauma.</li>
+<li>- Attracts abundance and financial opportunities.</li>
+<li>- Encourages wise decision-making in business.</li>
+<li>- Promotes clarity and focus for financial planning.</li>
+<li>- Removes mental blocks around wealth and success.</li>
+</ul>
+
+
+<p><strong>Shine with crystals – get your bracelet now!</strong></p>`,
+        images: ['images/product12(1).jpg','images/product12(2).jpg' ,'images/product12(3).jpg','images/product12(4).jpg','images/product12(5).jpg']
+      },
+      '13': {
+        name: 'Malachite',
+        price: 1099,
+        discount: 45.5,
+        description: `<p>Malachite is a striking green mineral known for its rich color and unique banded patterns.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>Malachite is a striking green mineral known for its rich color and unique banded patterns. Composed mainly of copper carbonate hydroxide, it has been used for thousands of years as a gemstone, ornamental stone, and even as a pigment in ancient art. Found in locations like the Democratic Republic of Congo, Russia, and Australia, Malachite is often associated with protection, transformation, and healing in metaphysical beliefs.</li>
+<li>- Promotes emotional healing and inner transformation.</li>
+<li>- Enhances intuition and spiritual insight.</li>
+<li>- Encourages risk-taking and change</li>
+<li>- Helps with overcoming fears and emotional blockages.</li>
+<li>- Encourages bold decision-making and calculated risk-taking.</li>
+<li>- Attracts prosperity and financial growth.</li>
+<li>- Promotes leadership qualities and strategic thinking.</li>
+<li>- Enhances personal growth and spiritual awareness.</li>
+</ul>
+
+
+<p><strong>Adorn your wrist – add this gemstone bracelet today!</strong></p>`,
+        images: ['images/product13(1).jpg','images/product13(2).jpg' ,'images/product13(3).jpg','images/product13(4).jpg','images/product13(5).jpg']
+      },
+      '14': {
+        name: 'Green jade',
+        price: 1099,
+        discount: 45.5,
+        description: `<p> Green Jade has a long and ancient history, and it was first discovered and used thousands of years ago in both China and Central America.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Green Jade is a powerful and revered stone that has been cherished for centuries, especially in Chinese culture, where it symbolizes purity, harmony, and prosperity. It is a variety of either nephrite or jadeite, with jadeite being the rarer and more valuable.</li>
+<li>- Attracts prosperity, luck, and financial abundance.</li>
+<li>- Promotes emotional balance and peace of mind.</li>
+<li>- Encourages harmony in relationship</li>
+<li>- Aids in spiritual growth and meditation.</li>
+<li>- Attracts financial success and new opportunities</li>
+<li>- Builds confidence and inner strength in leadership roles.</li>
+<li>- Supports physical healing, especially for kidneys and heart.</li>
+<li>- Shields the wearer from negative energy and harm.</li>
+</ul>
+
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product14(1).jpg','images/product14(2).jpg' ,'images/product14(3).jpg','images/product14(4).jpg','images/product14(5).jpg']
+      },
+      '15': {
+        name: 'Black Hematite',
+        price: 1299,
+        discount: 42.3,
+        description: `<p> Black Hematite was first discovered in ancient iron ore deposits, with some of the earliest known sources found in Brazil, England, and Italy.</p>
+
+<p><strong>Benifits:</strong></p>
+<ul>
+<li>- Black Hematite is a powerful grounding and protective stone known for its metallic black or steel-gray shine. It is a form of iron oxide and has been valued for centuries for both its physical and metaphysical properties.</li>
+<li>- Provides strong grounding and stability.</li>
+<li>- Shields from negative energy and psychic attacks.</li>
+<li>- Boosts focus, mental clarity, and concentration.</li>
+<li>- Promotes spiritual protection and inner peace.</li>
+<li>- Protects from negative business energy or competition.</li>
+<li>- Boosts leadership qualities and determination.</li>
+<li>- Helps maintain focus during important deals.</li>
+<li>- Promotes mental clarity in daily life.</li>
+</ul>
+
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product15(1).jpg','images/product15(2).jpg' ,'images/product15(3).jpg','images/product15(4).jpg','images/product15(5).jpg']
+      },
+      '16': {
+        name: 'Citrine Bracelet',
+        price: 4500,
+        discount: 20,
+        description: `<p>Elevate your style with our exquisite Citrine Bracelet, a harmonious blend of natural citrine crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural citrine crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Citrine crystals are believed to have energizing properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet3.jpg']
+      },
+      '17': {
+        name: 'Lapis Lazuli Bracelet',
+        price: 3800,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Lapis Lazuli Bracelet, a harmonious blend of natural lapis lazuli crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural lapis lazuli crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Lapis lazuli crystals are believed to have wisdom properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet4.jpg']
+      },
+      '18': {
+        name: 'Turquoise Bracelet',
+        price: 4200,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Turquoise Bracelet, a harmonious blend of natural turquoise crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural turquoise crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Turquoise crystals are believed to have protective properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet5.jpg']
+      },
+      '19': {
+        name: 'Garnet Bracelet',
+        price: 3900,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Garnet Bracelet, a harmonious blend of natural garnet crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural garnet crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Garnet crystals are believed to have passionate properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet6.jpg']
+      },
+      '20': {
+        name: 'Aquamarine Bracelet',
+        price: 4600,
+        discount: 20,
+        description: `<p>Elevate your style with our exquisite Aquamarine Bracelet, a harmonious blend of natural aquamarine crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural aquamarine crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Aquamarine crystals are believed to have calming properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet7.jpg']
+      },
+      '21': {
+        name: 'Peridot Bracelet',
+        price: 3600,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Peridot Bracelet, a harmonious blend of natural peridot crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural peridot crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Peridot crystals are believed to have abundance properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet8.jpg']
+      },
+      '22': {
+        name: 'Opal Bracelet',
+        price: 4800,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Opal Bracelet, a harmonious blend of natural opal crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural opal crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Opal crystals are believed to have creative properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet9.jpg']
+      },
+      '23': {
+        name: 'Moonstone Bracelet',
+        price: 4100,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Moonstone Bracelet, a harmonious blend of natural moonstone crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural moonstone crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Moonstone crystals are believed to have intuitive properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet10.jpg']
+      },
+      '24': {
+        name: 'Labradorite Bracelet',
+        price: 4300,
+        discount: 20,
+        description: `<p>Elevate your style with our exquisite Labradorite Bracelet, a harmonious blend of natural labradorite crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural labradorite crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Labradorite crystals are believed to have protective properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet11.jpg']
+      },
+      '25': {
+        name: 'Hematite Bracelet',
+        price: 3400,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Hematite Bracelet, a harmonious blend of natural hematite crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural hematite crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Hematite crystals are believed to have grounding properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet12.jpg']
+      },
+      '26': {
+        name: 'Jasper Bracelet',
+        price: 3700,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Jasper Bracelet, a harmonious blend of natural jasper crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural jasper crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Jasper crystals are believed to have nurturing properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet13.jpg']
+      },
+      '27': {
+        name: 'Onyx Bracelet',
+        price: 4400,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Onyx Bracelet, a harmonious blend of natural onyx crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural onyx crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Onyx crystals are believed to have strength properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet14.jpg']
+      },
+      '28': {
+        name: 'Tiger Eye Bracelet',
+        price: 4000,
+        discount: 20,
+        description: `<p>Elevate your style with our exquisite Tiger Eye Bracelet, a harmonious blend of natural tiger eye crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural tiger eye crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Tiger eye crystals are believed to have confidence properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet15.jpg']
+      },
+      '29': {
+        name: 'Carnelian Bracelet',
+        price: 3500,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Carnelian Bracelet, a harmonious blend of natural carnelian crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural carnelian crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Carnelian crystals are believed to have motivation properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product29(1).jpg','images/product29(2).jpg' ,'images/product29(3).jpg','images/product29(4).jpg','images/product29(5).jpg']
+      },
+      '30': {
+        name: 'Fluorite Bracelet',
+        price: 4500,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Fluorite Bracelet, a harmonious blend of natural fluorite crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural fluorite crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Fluorite crystals are believed to have clarity properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product30(1).jpg','images/product30(2).jpg' ,'images/product30(3).jpg','images/product30(4).jpg','images/product30(5).jpg']
+      },
+      '31': {
+        name: 'Sodalite Bracelet',
+        price: 3800,
+        discount: 20,
+        description: `<p>Elevate your style with our exquisite Sodalite Bracelet, a harmonious blend of natural sodalite crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural sodalite crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Sodalite crystals are believed to have logic properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product31(1).jpg','images/product31(2).jpg' ,'images/product31(3).jpg','images/product31(4).jpg','images/product31(5).jpg']
+      },
+      '32': {
+        name: 'Malachite Bracelet',
+        price: 4200,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Malachite Bracelet, a harmonious blend of natural malachite crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural malachite crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Malachite crystals are believed to have transformation properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product32(1).jpg','images/product32(2).jpg' ,'images/product32(3).jpg','images/product32(4).jpg','images/product32(5).jpg']
+      },
+      '33': {
+        name: 'Pyrite Bracelet',
+        price: 3900,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Pyrite Bracelet, a harmonious blend of natural pyrite crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural pyrite crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Pyrite crystals are believed to have abundance properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product33(1).jpg','images/product33(2).jpg' ,'images/product33(3).jpg','images/product33(4).jpg','images/product33(5).jpg']
+      },
+      '34': {
+        name: 'Rhodonite Bracelet',
+        price: 4600,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Rhodonite Bracelet, a harmonious blend of natural rhodonite crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural rhodonite crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Rhodonite crystals are believed to have compassion properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/product34(1).jpg','images/product34(2).jpg' ,'images/product34(3).jpg','images/product34(4).jpg','images/product34(5).jpg']
+      },
+      '35': {
+        name: 'Sunstone Bracelet',
+        price: 3600,
+        discount: 20,
+        description: `<p>Elevate your style with our exquisite Sunstone Bracelet, a harmonious blend of natural sunstone crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural sunstone crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Sunstone crystals are believed to have joy properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet22.jpg']
+      },
+      '36': {
+        name: 'Black Tourmaline Bracelet',
+        price: 4800,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Black Tourmaline Bracelet, a harmonious blend of natural black tourmaline crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural black tourmaline crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Black tourmaline crystals are believed to have protection properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet23.jpg']
+      },
+      '37': {
+        name: 'Clear Quartz Bracelet',
+        price: 4100,
+        discount: 10,
+        description: `<p>Elevate your style with our exquisite Clear Quartz Bracelet, a harmonious blend of natural clear quartz crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural clear quartz crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Clear quartz crystals are believed to have amplification properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet24.jpg']
+      },
+      '38': {
+        name: 'Aventurine Bracelet',
+        price: 4300,
+        discount: 15,
+        description: `<p>Elevate your style with our exquisite Aventurine Bracelet, a harmonious blend of natural aventurine crystals and timeless elegance.</p>
+
+<p><strong>Key Features:</strong></p>
+<ul>
+<li>Handcrafted with genuine natural aventurine crystals</li>
+<li>Adjustable elastic band for comfortable fit</li>
+<li>Lightweight and durable design</li>
+<li>Available in various crystal types for different energies</li>
+</ul>
+
+<p><strong>How to Use:</strong></p>
+<ol>
+<li>Gently slide the bracelet onto your wrist.</li>
+<li>Adjust the elastic band to ensure a snug, comfortable fit.</li>
+<li>Wear daily for style and potential wellness benefits.</li>
+<li>Clean with a soft cloth to maintain shine.</li>
+</ol>
+
+<p><strong>Benefits:</strong></p>
+<p>This bracelet not only enhances your outfit but also promotes balance and positive energy. Aventurine crystals are believed to have luck properties, making it a meaningful accessory for everyday wear or special occasions.</p>
+
+<p><strong>Add this stunning piece to your collection today and shine with crystal clarity!</strong></p>`,
+        images: ['images/bracelet25.jpg']
+      }
+    };
+    let currentImageIndex = 0;
+    let productImages = [];
+
+    function loadProduct() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const productId = urlParams.get('id');
+      const product = products[productId];
+
+      if (!product) {
+        document.body.innerHTML = '<p class="text-center text-red-600 mt-20 text-xl font-bold">Product not found!</p>';
+        return;
+      }
+
+      productImages = product.images;
+      const productTitleElement = document.getElementById('product-title');
+      if (productTitleElement) {
+        productTitleElement.textContent = product.name + ' - Crystal Loom';
+      }
+      const productNameElement = document.getElementById('product-name');
+      if (productNameElement) {
+        productNameElement.textContent = product.name;
+      }
+      const productDescriptionElement = document.getElementById('product-description');
+      if (productDescriptionElement) {
+        productDescriptionElement.innerHTML = product.description;
+      }
+      const discountedPrice = getDiscountedPrice(product, parseInt(productId));
+      const productPriceElement = document.getElementById('product-price');
+      if (productPriceElement) {
+        productPriceElement.innerHTML = formatPriceDisplay(product.price, discountedPrice);
+      }
+      
+      // Load initial main image
+      updateMainImage();
+
+      // Build image gallery
+      const gallery = document.getElementById('image-gallery');
+      gallery.innerHTML = '';
+      product.images.forEach((imageSrc, index) => {
+        const img = document.createElement('img');
+        img.src = imageSrc;
+        img.alt = `${product.name} Image ${index + 1}`;
+        img.className = 'w-24 h-24 object-cover rounded-md cursor-pointer border-2 border-transparent hover:border-green-500 transition-colors';
+        img.onclick = () => {
+          currentImageIndex = index;
+          updateMainImage();
+        };
+        gallery.appendChild(img);
+      });
+
+      document.getElementById('add-to-cart-btn').onclick = () => {
+        const quantity = parseInt(document.getElementById('quantity').value);
+        if (quantity > 0) {
+          addToCart(product, quantity, productId);
+        } else {
+          showNotification("Please enter a valid quantity.", true);
+        }
+      };
+    }
+
+    function updateMainImage() {
+      document.getElementById('main-product-image').src = productImages[currentImageIndex];
+    }
+
+    document.getElementById('next-btn').onclick = () => {
+      currentImageIndex = (currentImageIndex + 1) % productImages.length;
+      updateMainImage();
+    };
+
+    document.getElementById('prev-btn').onclick = () => {
+      currentImageIndex = (currentImageIndex - 1 + productImages.length) % productImages.length;
+      updateMainImage();
+    };
+
+    function addToCart(product, qty, productId) {
+      const discountedPrice = getDiscountedPrice(product, parseInt(productId));
+      let cart;
+      if (isLoggedIn()) {
+        const user = getLoggedInUser();
+        cart = user.cart || [];
+      } else {
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+      }
+      let item = cart.find(i => i.name === product.name);
+      if (item) {
+        item.qty += qty;
+      } else {
+        cart.push({ name: product.name, price: discountedPrice, originalPrice: product.price, image: product.images[0], qty: qty });
+      }
+      if (isLoggedIn()) {
+        const user = getLoggedInUser();
+        user.cart = cart;
+        localStorage.setItem('loggedInUser', JSON.stringify(user));
+      } else {
+        localStorage.setItem('cart', JSON.stringify(cart));
+      }
+      showNotification(`${qty} ${product.name}(s) added to cart!`);
+      loadCartCount();
+    }
+
+    function showNotification(message, isError = false) {
+      const notification = document.getElementById('notification');
+      const notificationMessage = document.getElementById('notification-message');
+
+      notificationMessage.textContent = message;
+      notification.classList.remove('hidden', 'bg-green-700');
+      notification.classList.add(isError ? 'bg-red-500' : 'bg-green-700');
+
+      setTimeout(() => {
+        notification.classList.add('hidden');
+      }, 3000);
+    }
+
+    function loadCartCount() {
+      let cart;
+      if (isLoggedIn()) {
+        const user = getLoggedInUser();
+        cart = user.cart || [];
+      } else {
+        cart = JSON.parse(localStorage.getItem('cart')) || [];
+      }
+      const totalItems = cart.reduce((sum, item) => sum + (item.qty || 1), 0);
+      const cartCountElem = document.getElementById('cart-count');
+      if (cartCountElem) {
+        if (totalItems > 0) {
+          cartCountElem.textContent = totalItems;
+          cartCountElem.classList.remove('hidden');
+        } else {
+          cartCountElem.classList.add('hidden');
+        }
+      }
+      const cartCountMobileElem = document.getElementById('cart-count-mobile');
+      if (cartCountMobileElem) {
+        if (totalItems > 0) {
+          cartCountMobileElem.textContent = totalItems;
+          cartCountMobileElem.classList.remove('hidden');
+        } else {
+          cartCountMobileElem.classList.add('hidden');
+        }
+      }
+      const cartCountPopupElem = document.getElementById('cart-count-popup');
+      if (cartCountPopupElem) {
+        if (totalItems > 0) {
+          cartCountPopupElem.textContent = totalItems;
+          cartCountPopupElem.classList.remove('hidden');
+        } else {
+          cartCountPopupElem.classList.add('hidden');
+        }
+      }
+    }
+
+    function isLoggedIn() {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
+
+    function getLoggedInUser() {
+      return JSON.parse(localStorage.getItem('loggedInUser')) || {};
+    }
+
+    function updateAuthSection() {
+      const authSection = document.getElementById('auth-section');
+      if (isLoggedIn()) {
+        const user = getLoggedInUser();
+        authSection.innerHTML = `
+          <div class="relative">
+            <button id="profile-btn" class="flex items-center gap-2 text-white hover:text-green-300">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 rounded-full bg-white text-green-800 p-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+              <span>${user.name}</span>
+            </button>
+            <div id="profile-dropdown" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 text-green-900">
+              <a href="personal.html?from=settings" class="block px-4 py-2 text-sm hover:bg-green-100">Account Settings</a>
+              <button onclick="logout()" class="block w-full text-left px-4 py-2 text-sm hover:bg-green-100">Logout</button>
+            </div>
+          </div>
+        `;
+        // Add event listener for dropdown
+        document.getElementById('profile-btn').addEventListener('click', function(e) {
+          e.stopPropagation();
+          document.getElementById('profile-dropdown').classList.toggle('hidden');
+        });
+        // Hide dropdown on outside click
+        document.addEventListener('click', function() {
+          document.getElementById('profile-dropdown').classList.add('hidden');
+        });
+      } else {
+        authSection.innerHTML = `
+          <a href="login.html" class="bg-white text-green-800 px-4 py-2 rounded-lg hover:bg-green-100">Login</a>
+        `;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('loggedInUser');
+      updateAuthSection();
+      alert('You have been logged out.');
+    }
+
+    // Hamburger menu toggle
+    const menuHamburger = document.getElementById('menu-hamburger');
+    const searchHamburger = document.getElementById('search-hamburger');
+    const searchBar = document.getElementById('search-bar');
+    const mobileMenuModal = document.getElementById('mobile-menu-modal');
+    const mobileMenuClose = document.getElementById('mobile-menu-close');
+
+    menuHamburger.addEventListener('click', () => {
+      mobileMenuModal.classList.remove('hidden');
+    });
+
+    mobileMenuClose.addEventListener('click', () => {
+      mobileMenuModal.classList.add('hidden');
+    });
+
+    // Close mobile menu when clicking outside the menu content
+    mobileMenuModal.addEventListener('click', (event) => {
+      if (event.target === mobileMenuModal) {
+        mobileMenuModal.classList.add('hidden');
+      }
+    });
+
+    searchHamburger.addEventListener('click', () => {
+      searchBar.classList.toggle('hidden');
+    });
+
+    // Products array for search
+    const productsArray = Object.values(products);
+
+    // Search functionality
+    const searchInput = document.getElementById('search-input');
+    const suggestions = document.getElementById('suggestions');
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      if (query.length > 0) {
+        const filteredProducts = productsArray.filter(product =>
+          product.name.toLowerCase().includes(query)
+        );
+        displaySuggestions(filteredProducts);
+      } else {
+        suggestions.classList.add('hidden');
+      }
+    });
+
+    function displaySuggestions(products) {
+      suggestions.innerHTML = '';
+      if (products.length > 0) {
+        products.forEach(product => {
+          const suggestionItem = document.createElement('div');
+          suggestionItem.className = 'px-4 py-2 hover:bg-gray-200 cursor-pointer';
+          suggestionItem.textContent = product.name;
+          suggestionItem.addEventListener('click', () => {
+            const productId = Object.keys(products).find(key => products[key].name === product.name);
+            window.location.href = `product.html?id=${productId}`;
+          });
+          suggestions.appendChild(suggestionItem);
+        });
+      } else {
+        const noResultItem = document.createElement('div');
+        noResultItem.className = 'px-4 py-2 text-gray-500';
+        noResultItem.textContent = 'No products found';
+        suggestions.appendChild(noResultItem);
+      }
+      suggestions.classList.remove('hidden');
+    }
+
+    // Hide suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!searchInput.contains(e.target) && !suggestions.contains(e.target)) {
+        suggestions.classList.add('hidden');
+      }
+    });
+
+    // Mobile search functionality
+    const mobileSearchInput = document.getElementById('mobile-search-input');
+    const mobileSuggestions = document.getElementById('mobile-suggestions');
+
+    mobileSearchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase();
+      if (query.length > 0) {
+        const filteredProducts = productsArray.filter(product =>
+          product.name.toLowerCase().includes(query)
+        );
+        displayMobileSuggestions(filteredProducts);
+      } else {
+        mobileSuggestions.classList.add('hidden');
+      }
+    });
+
+    function displayMobileSuggestions(products) {
+      mobileSuggestions.innerHTML = '';
+      if (products.length > 0) {
+        products.forEach(product => {
+          const suggestionItem = document.createElement('div');
+          suggestionItem.className = 'px-4 py-2 hover:bg-gray-200 cursor-pointer';
+          suggestionItem.textContent = product.name;
+          suggestionItem.addEventListener('click', () => {
+            const productId = Object.keys(products).find(key => products[key].name === product.name);
+            window.location.href = `product.html?id=${productId}`;
+            mobileMenuModal.classList.add('hidden');
+          });
+          mobileSuggestions.appendChild(suggestionItem);
+        });
+      } else {
+        const noResultItem = document.createElement('div');
+        noResultItem.className = 'px-4 py-2 text-gray-500';
+        noResultItem.textContent = 'No products found';
+        mobileSuggestions.appendChild(noResultItem);
+      }
+      mobileSuggestions.classList.remove('hidden');
+    }
+
+    // Hide mobile suggestions when clicking outside
+    document.addEventListener('click', (e) => {
+      if (!mobileSearchInput.contains(e.target) && !mobileSuggestions.contains(e.target)) {
+        mobileSuggestions.classList.add('hidden');
+      }
+    });
+
+    // FAQ Accordion functionality
+    document.querySelectorAll('.faq-question').forEach(button => {
+      button.addEventListener('click', () => {
+        const answer = button.nextElementSibling;
+        const isOpen = answer.style.maxHeight;
+
+        if (isOpen) {
+          answer.style.maxHeight = null;
+          button.querySelector('.faq-arrow').textContent = '▼';
+        } else {
+          answer.style.maxHeight = answer.scrollHeight + 'px';
+          button.querySelector('.faq-arrow').textContent = '▲';
+        }
+      });
+    });
+
+    // Quantity buttons functionality
+    document.getElementById('decrease-quantity').addEventListener('click', () => {
+      const qtyInput = document.getElementById('quantity');
+      let qty = parseInt(qtyInput.value);
+      if (qty > 1) {
+        qtyInput.value = qty - 1;
+      }
+    });
+
+    document.getElementById('increase-quantity').addEventListener('click', () => {
+      const qtyInput = document.getElementById('quantity');
+      let qty = parseInt(qtyInput.value);
+      qtyInput.value = qty + 1;
+    });
+
+    window.onload = function() {
+      loadProduct();
+      loadGridSuggestions();
+      updateCarousel();
+      startInterval();
+      updateAuthSection();
+      loadCartCount();
+    };
+
+    window.addEventListener("storage", function() {
+      loadCartCount();
+      updateAuthSection();
+    });
+
+    function loadGridSuggestions() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const currentProductId = urlParams.get('id');
+      const gridContainer = document.querySelector('.product-grid');
+      gridContainer.innerHTML = '';
+
+      // Show up to 4 other products excluding the current one
+      const suggestionProducts = Object.entries(products)
+        .filter(([id]) => id !== currentProductId)
+        .slice(0, 4);
+
+      suggestionProducts.forEach(([id, product]) => {
+        const productCard = document.createElement('div');
+        productCard.className = 'product-card';
+
+        productCard.onclick = () => {
+          window.location.href = `product.html?id=${id}`;
+        };
+
+        const img = document.createElement('img');
+        img.src = product.images[0];
+        img.alt = product.name;
+        img.className = 'product-image';
+
+        const name = document.createElement('h4');
+        name.textContent = product.name;
+        name.className = 'product-title';
+
+        const priceSection = document.createElement('div');
+        priceSection.className = 'price-section';
+        const discountedPrice = getDiscountedPrice(product, parseInt(id));
+        priceSection.innerHTML = formatPriceDisplay(product.price, discountedPrice);
+
+        const addBtn = document.createElement('button');
+        addBtn.textContent = 'Add to Cart';
+        addBtn.className = 'add-to-cart-btn';
+        addBtn.onclick = (e) => {
+          e.stopPropagation();
+          addToCart(product, 1, id);
+        };
+
+        productCard.appendChild(img);
+        productCard.appendChild(name);
+        productCard.appendChild(priceSection);
+        productCard.appendChild(addBtn);
+
+        gridContainer.appendChild(productCard);
+      });
+    }
+
+
+
+
+  </script>
+
+</body>
+</html>

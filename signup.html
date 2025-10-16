@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - Crystal Loom</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+  </style>
+</head>
+<body class="bg-green-50 flex items-center justify-center h-screen">
+
+  <!-- Back Button -->
+  <div class="fixed top-20 left-4 z-40 md:top-24 md:left-6">
+    <button onclick="history.back()" class="flex items-center text-white font-bold bg-gradient-to-r from-pink-500 to-purple-600 p-3 rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition duration-300 animate-pulse">
+      <span class="text-2xl mr-2">⬅️</span>
+      <span class="hidden sm:inline">Back</span>
+    </button>
+  </div>
+
+  <div class="bg-white p-10 rounded-2xl shadow-xl w-96 max-w-full mx-4 mt-8">
+    <div class="flex flex-col items-center mb-6">
+      <!-- Logo -->
+      <img src="Untitled design.png" alt="Crystal Loom Logo" class="h-16 w-16 rounded-full mb-3">
+      <h2 class="text-2xl font-bold text-green-900">Create an Account</h2>
+    </div>
+
+    <!-- Signup Form -->
+    <form class="space-y-4" onsubmit="handleSignup(event)">
+      <input id="name" type="text" placeholder="Full Name" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500" required>
+      <input id="email" type="email" placeholder="Email Address" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500" required>
+      <input id="password" type="password" placeholder="Password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500" required>
+      <input id="confirmPassword" type="password" placeholder="Confirm Password" class="w-full p-3 border rounded-lg focus:ring-2 focus:ring-green-500" required>
+      <button type="submit" class="w-full bg-green-700 text-white py-3 rounded-lg hover:bg-green-600 font-semibold transition-colors duration-200">Sign Up</button>
+    </form>
+
+    <p class="mt-6 text-center text-sm text-gray-600">
+      Already have an account? <a href="login.html" class="text-green-700 hover:text-green-900 font-medium">Log in here.</a>
+    </p>
+  </div>
+
+  <!-- Message Popup -->
+  <div id="messagePopup" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center hidden">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-80 text-center">
+      <p id="messagePopupText" class="mb-4 text-green-900 font-semibold"></p>
+      <button id="closeMessagePopup" class="bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-600">Close</button>
+    </div>
+  </div>
+
+  <script>
+    function isLoggedIn() {
+      return localStorage.getItem('isLoggedIn') === 'true';
+    }
+
+    function getLoggedInUser() {
+      return JSON.parse(localStorage.getItem('loggedInUser'));
+    }
+
+    function updateAuthSection() {
+      const authSection = document.getElementById('auth-section');
+      if (isLoggedIn()) {
+        const user = getLoggedInUser();
+        authSection.innerHTML = `
+          <span class="text-white">Welcome, ${user.name}</span>
+          <button onclick="logout()" class="bg-white text-green-800 px-4 py-2 rounded-lg hover:bg-green-100">Logout</button>
+        `;
+      } else {
+        authSection.innerHTML = `
+          <a href="login.html" class="bg-white text-green-800 px-4 py-2 rounded-lg hover:bg-green-100">Login</a>
+        `;
+      }
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      localStorage.removeItem('loggedInUser');
+      updateAuthSection();
+      showMessagePopup('You have been logged out.');
+    }
+
+    function showMessagePopup(message) {
+      document.getElementById('messagePopupText').textContent = message;
+      document.getElementById('messagePopup').classList.remove('hidden');
+    }
+
+    function loadCartCount() {
+      let cart = JSON.parse(localStorage.getItem('cart')) || [];
+      const totalItems = cart.reduce((sum, item) => sum + item.qty, 0);
+      const cartCountElem = document.getElementById('cart-count');
+      if (cartCountElem) {
+        cartCountElem.textContent = totalItems;
+      }
+    }
+
+    function handleSignup(event) {
+      event.preventDefault();
+
+      let name = document.getElementById("name").value.trim();
+      let email = document.getElementById("email").value.trim();
+      let password = document.getElementById("password").value;
+      let confirmPassword = document.getElementById("confirmPassword").value;
+
+      if (password !== confirmPassword) {
+        showMessagePopup("Passwords do not match!");
+        return;
+      }
+
+      fetch('http://localhost:3000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, email, password }),
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          showMessagePopup(data.error);
+        } else {
+          showMessagePopup("Account created successfully! You can now log in.");
+          window.location.href = "login.html";
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        showMessagePopup('An error occurred. Please try again.');
+      });
+    }
+
+    window.onload = function() {
+      if (document.getElementById('auth-section')) updateAuthSection();
+      if (document.getElementById('cart-count')) loadCartCount();
+
+      // Add event listener for close button
+      document.getElementById('closeMessagePopup').addEventListener('click', function() {
+        document.getElementById('messagePopup').classList.add('hidden');
+      });
+    };
+    window.addEventListener("storage", function() {
+      if (document.getElementById('auth-section')) updateAuthSection();
+      if (document.getElementById('cart-count')) loadCartCount();
+    });
+  </script>
+
+</body>
+</html>
